@@ -8,6 +8,8 @@ import { getRoomBySlug, rooms } from "@/lib/data/site";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://serraotel.com";
 
+export const dynamicParams = false;
+
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
