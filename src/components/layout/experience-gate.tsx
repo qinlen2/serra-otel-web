@@ -13,7 +13,7 @@ export function ExperienceGate() {
   const { t, language } = usePreferences();
   const copy = {
     tr: {
-      title: "Serra deneyiminizi ayarlayın.",
+      title: "Serra Otel deneyiminizi ayarlayın.",
       text: "Dil tercihiniz hatırlanır. Atmosfer günün saatine göre otomatik ayarlanır.",
       continue: "Devam Et",
     },
