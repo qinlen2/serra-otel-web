@@ -1,6 +1,6 @@
 "use client";
 
-import { AtSign, MapPin, MessageCircle, Phone } from "lucide-react";
+import { MapPin, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { usePreferences } from "@/components/layout/preference-provider";
@@ -137,15 +137,19 @@ export function SiteFooter() {
         </div>
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/5 pt-5 text-center text-[11px] font-medium text-white/35 sm:flex-row sm:text-left">
           <p>
-            Site tasarimi ve gelistirme:{" "}
+            Web tasarim ve gelistirme:{" "}
             <a href="https://salihcetin.ws" target="_blank" rel="noreferrer" className="text-white/55 transition hover:text-white">
               salihcetin.ws
             </a>
           </p>
-          <a href="https://www.instagram.com/morningc.off" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-white/45 transition hover:text-white">
-            <AtSign size={13} />
-            @morningc.off
-          </a>
+          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+            <a href="mailto:salihcetin.ws@gmail.com" className="text-white/45 transition hover:text-white">
+              salihcetin.ws@gmail.com
+            </a>
+            <a href="https://www.instagram.com/morningc.off" target="_blank" rel="noreferrer" className="text-white/45 transition hover:text-white">
+              Instagram: @morningc.off
+            </a>
+          </div>
         </div>
       </div>
     </footer>
