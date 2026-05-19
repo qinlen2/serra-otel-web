@@ -8,7 +8,7 @@ const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://serraotel.com";
 export const metadata: Metadata = {
   title: "İletişim ve Rezervasyon | Serra Otel Urla",
   description:
-    "Serra Otel Urla rezervasyon talebi gönderin. Telefon: +90 232 752 01 10, WhatsApp: +90 541 373 84 20. Atatürk Mah. 2226. Sok. No:18, Urla/İzmir.",
+    "Serra Otel Urla rezervasyon talebi gönderin. Telefon: +90 232 752 01 10, WhatsApp: +90 532 275 54 55. Atatürk Mah. 2226. Sok. No:18, Urla/İzmir.",
   alternates: { canonical: `${BASE}/iletisim` },
   openGraph: {
     title: "İletişim | Serra Otel Urla",

@@ -15,7 +15,7 @@ export default function Home() {
       <HeroSection />
 
       {/* 1. Odalar — "Nerede kalacağım?" */}
-      <div className="bg-white border-y border-[var(--line)]/50">
+      <div className="border-y border-[var(--line)]/50">
         <RoomsShowcase limit={6} />
       </div>
 

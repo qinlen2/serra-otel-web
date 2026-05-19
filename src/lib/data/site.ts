@@ -2,19 +2,7 @@ import type { BreakfastItem, HotelArea, HotelHighlight, NearbyPlace, Room, Trans
 import type { Language } from "@/components/layout/preference-provider";
 
 const serraPhoto = (name: string) => `/serra/current/${name}`;
-
-const roomImageSets = [
-  ["gallery-23.jpeg", "gallery-25.jpeg"],
-  ["gallery-19.jpeg", "gallery-26.jpeg"],
-  ["gallery-13.jpeg", "gallery-14.jpeg"],
-  ["gallery-15.jpeg", "gallery-17.jpeg"],
-  ["gallery-24.jpeg", "gallery-23.jpeg"],
-  ["gallery-26.jpeg", "gallery-13.jpeg"],
-  ["gallery-14.jpeg", "gallery-15.jpeg"],
-  ["gallery-17.jpeg", "gallery-19.jpeg"],
-  ["gallery-25.jpeg", "gallery-24.jpeg"],
-  ["gallery-13.jpeg", "gallery-26.jpeg"],
-].map((images) => images.map(serraPhoto));
+const roomPhoto = (roomNum: string, img: string) => `/serra/serra_rooms/${roomNum}/${img}`;
 
 const nearbyImages = [
   "gallery-16.jpeg",
@@ -28,82 +16,119 @@ const nearbyImages = [
   "gallery-07.jpeg",
 ].map(serraPhoto);
 
-export const rooms: Room[] = Array.from({ length: 10 }).map((_, index) => {
-  const number = index + 1;
-  const roomPresets = [
-    {
-      name: "Standart Çift Kişilik Oda",
-      description: "16 m², özel banyolu, plazma TV, minibar ve buzdolabı bulunan konforlu oda.",
-      capacity: 2,
-      bedType: "1 çift kişilik yatak",
-      size: "16 m²",
-      balcony: false,
-      suitableFor: ["Çiftler", "Kısa konaklama"],
-    },
-    {
-      name: "Standart Üç Kişilik Oda",
-      description: "16 m², üç tek yataklı, özel banyolu ve klimalı pratik aile odası.",
-      capacity: 3,
-      bedType: "3 tek yatak",
-      size: "16 m²",
-      balcony: false,
-      suitableFor: ["Aileler", "Arkadaş grupları"],
-    },
-    {
-      name: "Çatı Katı Suiti",
-      description: "18 m², deniz manzaralı, balkonlu ve queen yataklı özel suit oda.",
-      capacity: 2,
-      bedType: "1 queen yatak",
-      size: "18 m²",
-      balcony: true,
-      suitableFor: ["Çiftler", "Romantik tatil"],
-    },
-  ];
-  const preset = roomPresets[index % roomPresets.length];
-  const hasBalcony = preset.balcony || [6, 9].includes(number);
-  return {
-    id: `room-${number}`,
-    slug: `oda-${number}`,
-    name: number <= 3 ? preset.name : `${preset.name} ${number}`,
-    shortDescription: preset.description,
-    capacity: preset.capacity,
-    bedType: preset.bedType,
-    size: preset.size,
-    hasBalcony,
-    hasAirConditioning: true,
-    hasTv: true,
-    hasWifi: true,
-    hasBathroom: true,
-    suitableFor: preset.suitableFor,
-    sortOrder: number,
-    isActive: true,
-    images: [
-      {
-        id: `room-${number}-cover`,
-        roomId: `room-${number}`,
-        url: roomImageSets[index][0],
-        alt: `Serra Otel ${number}. oda`,
-        sortOrder: 1,
-        isCover: true,
-      },
-      {
-        id: `room-${number}-detail`,
-        roomId: `room-${number}`,
-        url: roomImageSets[index][1],
-        alt: `Serra Otel oda detayı`,
-        sortOrder: 2,
-        isCover: false,
-      },
-    ],
-  };
-});
+/* ── Gerçek Serra Otel Oda Verileri ── */
+const realRooms = [
+  {
+    number: "102",
+    name: "Üç Kişilik Oda",
+    description: "Zemin katta, balkonsuz, üç tek yataklı konforlu oda.",
+    capacity: 3,
+    bedType: "3 tek yatak",
+    size: "16 m²",
+    hasBalcony: false,
+    suitableFor: ["Aileler", "Arkadaş grupları"],
+    images: ["1.jpeg"],
+  },
+  {
+    number: "201",
+    name: "Deniz Manzaralı Oda",
+    description: "2. katta, deniz manzaralı, çift kişilik konforlu oda.",
+    capacity: 2,
+    bedType: "1 çift kişilik yatak",
+    size: "16 m²",
+    hasBalcony: false,
+    suitableFor: ["Çiftler", "Romantik tatil"],
+    images: ["1.jpeg"],
+  },
+  {
+    number: "202",
+    name: "Deniz Manzaralı Oda",
+    description: "Orta katta, deniz manzaralı, çift kişilik ferah oda.",
+    capacity: 2,
+    bedType: "1 çift kişilik yatak",
+    size: "16 m²",
+    hasBalcony: false,
+    suitableFor: ["Çiftler", "Kısa konaklama"],
+    images: ["1.jpeg", "2.jpeg"],
+  },
+  {
+    number: "203",
+    name: "Balkonlu Deniz Manzaralı Oda",
+    description: "Orta katta, yan balkondan deniz manzaralı, aydınlık oda.",
+    capacity: 2,
+    bedType: "1 çift kişilik yatak",
+    size: "16 m²",
+    hasBalcony: true,
+    suitableFor: ["Çiftler", "Romantik tatil"],
+    images: ["1.jpeg", "2.jpeg", "3.jpeg"],
+  },
+  {
+    number: "204",
+    name: "Standart Oda",
+    description: "Yola cepheli, balkonsuz, sigara içilmeyen sakin oda.",
+    capacity: 2,
+    bedType: "1 çift kişilik yatak",
+    size: "16 m²",
+    hasBalcony: false,
+    suitableFor: ["Solo gezginler", "Kısa konaklama"],
+    images: ["1.jpeg", "2.jpeg", "3.jpeg"],
+  },
+  {
+    number: "302",
+    name: "Teras Katı Deniz Manzaralı Oda",
+    description: "Teras katında, deniz manzaralı, özel konumlu oda.",
+    capacity: 2,
+    bedType: "1 çift kişilik yatak",
+    size: "18 m²",
+    hasBalcony: false,
+    suitableFor: ["Çiftler", "Romantik tatil"],
+    images: ["1.jpeg", "2.jpeg"],
+  },
+  {
+    number: "303",
+    name: "Teras Katı Balkonlu Süit",
+    description: "Teras katında, yandan deniz manzaralı, balkonlu özel süit oda.",
+    capacity: 2,
+    bedType: "1 queen yatak",
+    size: "18 m²",
+    hasBalcony: true,
+    suitableFor: ["Çiftler", "Romantik tatil"],
+    images: ["1.jpeg", "2.jpeg"],
+  },
+];
+
+export const rooms: Room[] = realRooms.map((room, index) => ({
+  id: `room-${room.number}`,
+  slug: `oda-${room.number}`,
+  name: room.name,
+  shortDescription: room.description,
+  capacity: room.capacity,
+  bedType: room.bedType,
+  size: room.size,
+  hasBalcony: room.hasBalcony,
+  hasAirConditioning: true,
+  hasTv: true,
+  hasWifi: true,
+  hasBathroom: true,
+  suitableFor: room.suitableFor,
+  sortOrder: index + 1,
+  isActive: true,
+  images: room.images.map((img, imgIndex) => ({
+    id: `room-${room.number}-${imgIndex + 1}`,
+    roomId: `room-${room.number}`,
+    url: roomPhoto(room.number, img),
+    alt: `Serra Otel ${room.number} nolu oda${imgIndex === 0 ? "" : ` - detay ${imgIndex + 1}`}`,
+    sortOrder: imgIndex + 1,
+    isCover: imgIndex === 0,
+  })),
+}));
 
 export const hotelAreas: HotelArea[] = [
   ["exterior", "Giriş ve Dış Alan", "Turkuaz tabelalı, taş dokulu butik cephe.", serraPhoto("gallery-16.jpeg")],
   ["dining", "Yemek Alanı", "Ahşap tavanlı, sıcak ve kapalı cafe alanı.", serraPhoto("gallery-03.jpeg")],
   ["common", "Cafe Oturma Alanı", "Turuncu ve krem koltuklarla samimi ortak alan.", serraPhoto("gallery-21.jpeg")],
   ["reception", "Resepsiyon", "Ahşap detaylı, sade karşılama noktası.", serraPhoto("gallery-06.jpeg")],
-  ["corridor", "Oda Geçişleri", "Taş duvar ve ahşap çatı altında sakin geçiş.", serraPhoto("gallery-45.jpeg")],
+  ["corridor", "Oda Geçişleri", "Taş duvar ve ahşap çatı altında sakin geçiş.", serraPhoto("oda-gecisleri.jpg.jpeg")],
 ].map(([type, title, description, imageUrl], index) => ({
   id: `area-${index + 1}`,
   type: type as HotelArea["type"],
@@ -116,20 +141,20 @@ export const hotelAreas: HotelArea[] = [
 
 export const breakfastItems: BreakfastItem[] = [
   "Yumurta",
-  "Peynir",
-  "Salatalık",
+  "Beyaz peynir",
   "Domates",
-  "Biber",
+  "Salatalık",
+  "Siyah zeytin",
   "Tereyağı",
   "Bal",
+  "Vişne reçeli",
   "Çokokrem",
-  "Reçel",
   "Sınırsız çay",
 ].map((name, index) => ({
   id: `breakfast-${index + 1}`,
   name,
   sortOrder: index + 1,
-  isHighlighted: ["Yumurta", "Sınırsız çay", "Bal"].includes(name),
+  isHighlighted: ["Yumurta", "Sınırsız çay", "Bal", "Beyaz peynir"].includes(name),
   isActive: true,
 }));
 
@@ -173,9 +198,9 @@ export const nearbyPlaces: NearbyPlace[] = [
 }));
 
 export const siteSettings = {
-  phone: "+905413738420",
+  phone: "+905322755455",
   phoneLandline: "+902327520110",
-  whatsapp: "https://wa.me/905413738420?text=Merhaba%2C%20Serra%20Otel%20i%C3%A7in%20rezervasyon%20talebi%20olu%C5%9Fturmak%20istiyorum.",
+  whatsapp: "https://wa.me/905322755455?text=Merhaba%2C%20Serra%20Otel%20i%C3%A7in%20rezervasyon%20talebi%20olu%C5%9Fturmak%20istiyorum.",
   maps: "https://www.google.com/maps/search/?api=1&query=Serra%20Otel%202226%20Sokak%20No%2018%20Atat%C3%BCrk%20Mahallesi%20Urla",
   address: "Atatürk Mahallesi, 2226. Sokak No:18, 35430 Urla/İzmir",
   checkIn: "14:00",
@@ -187,20 +212,20 @@ export const siteSettings = {
 
 export function getWhatsAppUrl(language: Language, context?: string) {
   const baseMessage = {
-    tr: "Merhaba, Serra Otel için rezervasyon talebi oluşturmak istiyorum.",
-    en: "Hello, I would like to make a reservation request for Serra Hotel.",
-    de: "Hallo, ich moechte eine Reservierungsanfrage fuer das Serra Hotel stellen.",
+    tr: "Merhaba, siteniz üzerinden size ulaşıyorum. Serra Otel için rezervasyon talebi oluşturmak istiyorum.",
+    en: "Hello, I am reaching out from your website. I would like to make a reservation request for Serra Hotel.",
+    de: "Hallo, ich kontaktiere Sie über Ihre Website. Ich möchte eine Reservierungsanfrage für das Serra Hotel stellen.",
   }[language];
 
   const contextualMessage = context ? {
-    tr: `Merhaba, ${context} hakkında bilgi almak ve rezervasyon yapmak istiyorum.`,
-    en: `Hello, I would like to get information and make a reservation for ${context}.`,
-    de: `Hallo, ich moechte Informationen erhalten und eine Reservierung fuer ${context} vornehmen.`,
+    tr: `Merhaba, siteniz üzerinden size ulaşıyorum. ${context} hakkında bilgi almak ve rezervasyon yapmak istiyorum.`,
+    en: `Hello, I am reaching out from your website. I would like to get information and make a reservation for ${context}.`,
+    de: `Hallo, ich kontaktiere Sie über Ihre Website. Ich möchte Informationen erhalten und eine Reservierung für ${context} vornehmen.`,
   }[language] : "";
 
   const finalMessage = context ? contextualMessage : baseMessage;
 
-  return `https://wa.me/905413738420?text=${encodeURIComponent(finalMessage)}`;
+  return `https://wa.me/905322755455?text=${encodeURIComponent(finalMessage)}`;
 }
 
 export const hotelHighlights: HotelHighlight[] = [
@@ -219,32 +244,49 @@ export function getRoomBySlug(slug: string) {
 }
 
 const roomTranslations: Record<string, Record<Language, Partial<Pick<Room, "name" | "shortDescription" | "bedType" | "suitableFor">>>> = {
-  "oda-1": {
-    tr: { name: "Standart Çift Kişilik Oda", shortDescription: "16 m², özel banyolu, plazma TV, minibar ve buzdolabı bulunan konforlu oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Çiftler", "Kısa konaklama"] },
-    en: { name: "Standard Double Room", shortDescription: "A comfortable 16 m² room with private bathroom, plasma TV, minibar and fridge.", bedType: "1 double bed", suitableFor: ["Couples", "Short stays"] },
-    de: { name: "Standard Doppelzimmer", shortDescription: "Ein komfortables 16 m² Zimmer mit eigenem Bad, Plasma-TV, Minibar und Kühlschrank.", bedType: "1 Doppelbett", suitableFor: ["Paare", "Kurzaufenthalt"] },
+  "oda-102": {
+    tr: { name: "Üç Kişilik Oda", shortDescription: "Zemin katta, balkonsuz, üç tek yataklı konforlu oda.", bedType: "3 tek yatak", suitableFor: ["Aileler", "Arkadaş grupları"] },
+    en: { name: "Triple Room", shortDescription: "A comfortable ground-floor room with three single beds, no balcony.", bedType: "3 single beds", suitableFor: ["Families", "Friend groups"] },
+    de: { name: "Dreibettzimmer", shortDescription: "Ein komfortables Erdgeschosszimmer mit drei Einzelbetten, ohne Balkon.", bedType: "3 Einzelbetten", suitableFor: ["Familien", "Freundesgruppen"] },
   },
-  "oda-2": {
-    tr: { name: "Standart Üç Kişilik Oda", shortDescription: "16 m², üç tek yataklı, özel banyolu ve klimalı pratik aile odası.", bedType: "3 tek yatak", suitableFor: ["Aileler", "Arkadaş grupları"] },
-    en: { name: "Standard Triple Room", shortDescription: "A practical 16 m² family room with three single beds, private bathroom and A/C.", bedType: "3 single beds", suitableFor: ["Families", "Friend groups"] },
-    de: { name: "Standard Dreibettzimmer", shortDescription: "Ein praktisches 16 m² Familienzimmer mit drei Einzelbetten, eigenem Bad und Klimaanlage.", bedType: "3 Einzelbetten", suitableFor: ["Familien", "Freundesgruppen"] },
+  "oda-201": {
+    tr: { name: "Deniz Manzaralı Oda", shortDescription: "2. katta, deniz manzaralı, çift kişilik konforlu oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Çiftler", "Romantik tatil"] },
+    en: { name: "Sea View Room", shortDescription: "A comfortable double room on the 2nd floor with sea view.", bedType: "1 double bed", suitableFor: ["Couples", "Romantic getaway"] },
+    de: { name: "Zimmer mit Meerblick", shortDescription: "Ein komfortables Doppelzimmer im 2. Stock mit Meerblick.", bedType: "1 Doppelbett", suitableFor: ["Paare", "Romantischer Urlaub"] },
   },
-  "oda-3": {
-    tr: { name: "Çatı Katı Suiti", shortDescription: "18 m², deniz manzaralı, balkonlu ve queen yataklı özel suit oda.", bedType: "1 queen yatak", suitableFor: ["Çiftler", "Romantik tatil"] },
-    en: { name: "Attic Suite", shortDescription: "An 18 m² private suite with sea view, balcony and queen bed.", bedType: "1 queen bed", suitableFor: ["Couples", "Romantic getaway"] },
-    de: { name: "Dachgeschoss-Suite", shortDescription: "Eine 18 m² Suite mit Meerblick, Balkon und Queen-Bett.", bedType: "1 Queen-Bett", suitableFor: ["Paare", "Romantischer Urlaub"] },
+  "oda-202": {
+    tr: { name: "Deniz Manzaralı Oda", shortDescription: "Orta katta, deniz manzaralı, çift kişilik ferah oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Çiftler", "Kısa konaklama"] },
+    en: { name: "Sea View Room", shortDescription: "A spacious double room on the middle floor with sea view.", bedType: "1 double bed", suitableFor: ["Couples", "Short stays"] },
+    de: { name: "Zimmer mit Meerblick", shortDescription: "Ein geräumiges Doppelzimmer im Mittelgeschoss mit Meerblick.", bedType: "1 Doppelbett", suitableFor: ["Paare", "Kurzaufenthalt"] },
+  },
+  "oda-203": {
+    tr: { name: "Balkonlu Deniz Manzaralı Oda", shortDescription: "Orta katta, yan balkondan deniz manzaralı, aydınlık oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Çiftler", "Romantik tatil"] },
+    en: { name: "Sea View Room with Balcony", shortDescription: "A bright room on the middle floor with sea view from the side balcony.", bedType: "1 double bed", suitableFor: ["Couples", "Romantic getaway"] },
+    de: { name: "Zimmer mit Meerblick und Balkon", shortDescription: "Ein helles Zimmer im Mittelgeschoss mit Meerblick vom Seitenbalkon.", bedType: "1 Doppelbett", suitableFor: ["Paare", "Romantischer Urlaub"] },
+  },
+  "oda-204": {
+    tr: { name: "Standart Oda", shortDescription: "Yola cepheli, balkonsuz, sigara içilmeyen sakin oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Solo gezginler", "Kısa konaklama"] },
+    en: { name: "Standard Room", shortDescription: "A quiet, non-smoking road-facing room without balcony.", bedType: "1 double bed", suitableFor: ["Solo travelers", "Short stays"] },
+    de: { name: "Standardzimmer", shortDescription: "Ein ruhiges Nichtraucherzimmer zur Straßenseite, ohne Balkon.", bedType: "1 Doppelbett", suitableFor: ["Alleinreisende", "Kurzaufenthalt"] },
+  },
+  "oda-302": {
+    tr: { name: "Teras Katı Deniz Manzaralı Oda", shortDescription: "Teras katında, deniz manzaralı, özel konumlu oda.", bedType: "1 çift kişilik yatak", suitableFor: ["Çiftler", "Romantik tatil"] },
+    en: { name: "Terrace Floor Sea View Room", shortDescription: "A specially located room on the terrace floor with sea view.", bedType: "1 double bed", suitableFor: ["Couples", "Romantic getaway"] },
+    de: { name: "Terrassenzimmer mit Meerblick", shortDescription: "Ein besonders gelegenes Zimmer auf der Terrassenetage mit Meerblick.", bedType: "1 Doppelbett", suitableFor: ["Paare", "Romantischer Urlaub"] },
+  },
+  "oda-303": {
+    tr: { name: "Teras Katı Balkonlu Süit", shortDescription: "Teras katında, yandan deniz manzaralı, balkonlu özel süit oda.", bedType: "1 queen yatak", suitableFor: ["Çiftler", "Romantik tatil"] },
+    en: { name: "Terrace Suite with Balcony", shortDescription: "A private suite on the terrace floor with side sea view and balcony.", bedType: "1 queen bed", suitableFor: ["Couples", "Romantic getaway"] },
+    de: { name: "Terrassensuite mit Balkon", shortDescription: "Eine private Suite auf der Terrassenetage mit seitlichem Meerblick und Balkon.", bedType: "1 Queen-Bett", suitableFor: ["Paare", "Romantischer Urlaub"] },
   },
 };
 
 function roomTranslationFor(room: Room, language: Language) {
-  const key = room.slug === "oda-1" || room.slug === "oda-2" || room.slug === "oda-3" ? room.slug : `oda-${((room.sortOrder - 1) % 3) + 1}`;
-  const translated = roomTranslations[key]?.[language] ?? {};
-  const suffix = room.sortOrder > 3 ? ` ${room.sortOrder}` : "";
-
+  const translated = roomTranslations[room.slug]?.[language] ?? {};
   return {
     ...room,
     ...translated,
-    name: translated.name ? `${translated.name}${suffix}` : room.name,
+    name: translated.name ?? room.name,
     images: room.images.map((image) => ({
       ...image,
       alt:
@@ -287,14 +329,14 @@ const hotelAreaTranslations: Record<HotelArea["type"], Record<Language, Pick<Hot
 
 const breakfastTranslations: Record<string, Record<Language, string>> = {
   Yumurta: { tr: "Yumurta", en: "Eggs", de: "Eier" },
-  Peynir: { tr: "Peynir", en: "Cheese", de: "Käse" },
-  Salatalık: { tr: "Salatalık", en: "Cucumber", de: "Gurke" },
+  "Beyaz peynir": { tr: "Beyaz peynir", en: "White cheese", de: "Weißkäse" },
   Domates: { tr: "Domates", en: "Tomato", de: "Tomate" },
-  Biber: { tr: "Biber", en: "Pepper", de: "Paprika" },
+  Salatalık: { tr: "Salatalık", en: "Cucumber", de: "Gurke" },
+  "Siyah zeytin": { tr: "Siyah zeytin", en: "Black olives", de: "Schwarze Oliven" },
   Tereyağı: { tr: "Tereyağı", en: "Butter", de: "Butter" },
   Bal: { tr: "Bal", en: "Honey", de: "Honig" },
+  "Vişne reçeli": { tr: "Vişne reçeli", en: "Sour cherry jam", de: "Sauerkirschmarmelade" },
   Çokokrem: { tr: "Çokokrem", en: "Chocolate spread", de: "Schokoaufstrich" },
-  Reçel: { tr: "Reçel", en: "Jam", de: "Marmelade" },
   "Sınırsız çay": { tr: "Sınırsız çay", en: "Unlimited tea", de: "Unbegrenzt Tee" },
 };
 

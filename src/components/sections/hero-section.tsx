@@ -46,19 +46,25 @@ export function HeroSection() {
     <section ref={sectionRef} className="relative min-h-[100svh] overflow-hidden flex items-center">
       {/* Full-bleed background image with parallax */}
       <motion.div className="absolute inset-0 z-0" style={{ y: bgY, scale: bgScale }}>
-        <Image
-          src="/serra/current/gallery-01.jpeg"
-          alt="Serra Otel Urla dış cephe ve deniz manzarası"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        {/* Cinematic overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-black/20" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30" />
-        {/* Subtle warm tint */}
-        <div className="absolute inset-0 bg-[var(--brand-gold)]/5 mix-blend-overlay" />
+        <motion.div 
+          className="absolute inset-0"
+          animate={{ scale: [1, 1.05] }}
+          transition={{ duration: 25, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        >
+          <Image
+            src="/serra/current/hero-final.png"
+            alt="Serra Otel Urla dış cephe ve deniz manzarası"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+        </motion.div>
+        {/* Cinematic overlays - reduced intensity for vibrancy, left dark for text */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        {/* Warm Ege/Amber color grade */}
+        <div className="absolute inset-0 bg-amber-500/20 mix-blend-overlay" />
       </motion.div>
 
       {/* Animated grain overlay for cinematic feel */}
@@ -126,7 +132,7 @@ export function HeroSection() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 1.2 + i * 0.1 }}
-                className="flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-[12px] md:text-[13px] font-medium text-white/90 backdrop-blur-md"
+                className="flex items-center gap-2 rounded-full border border-[var(--brand-gold)]/40 bg-[var(--brand-gold)]/15 px-4 py-2 text-[12px] md:text-[13px] font-medium text-white/95 backdrop-blur-md"
               >
                 <fact.icon className="text-[var(--brand-gold)]" size={15} />
                 <span>{fact.label}</span>
@@ -170,8 +176,8 @@ export function HeroSection() {
         </motion.div>
       </motion.div>
 
-      {/* Bottom gradient fade to content */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[var(--background)] to-transparent z-[5]" />
+      {/* Bottom gradient fade to content - shorter and transitioning to cream/stone */}
+      <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[var(--background)] via-[var(--background)]/80 to-transparent z-[5]" />
     </section>
   );
 }

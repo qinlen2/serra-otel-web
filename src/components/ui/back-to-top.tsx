@@ -23,7 +23,7 @@ export function BackToTop() {
           exit={{ opacity: 0, y: 20, scale: 0.8 }}
           transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-[5.5rem] left-4 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] bg-white/90 text-[var(--foreground)] shadow-lg backdrop-blur-md transition-colors hover:bg-[var(--brand-gold)] hover:text-white hover:border-transparent md:bottom-8 md:left-auto md:right-8"
+          className="fixed bottom-24 left-4 z-50 flex h-10 w-10 items-center justify-center rounded-full border border-[var(--line)] bg-white/90 text-[var(--foreground)] shadow-lg backdrop-blur-md transition-colors hover:bg-[var(--brand-gold)] hover:text-white hover:border-transparent lg:bottom-8"
           aria-label="Sayfa başına dön"
         >
           <ArrowUp size={18} strokeWidth={2.5} />

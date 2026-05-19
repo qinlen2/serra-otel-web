@@ -4,6 +4,8 @@ import { rooms } from "@/lib/data/site";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://serraotel.com";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

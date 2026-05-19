@@ -113,7 +113,7 @@ export function SiteFooter() {
                 <MessageCircle size={14} className="shrink-0 text-[#25D366]" />
                 <div>
                   <a href={getWhatsAppUrl(language)} className="block text-white/90 hover:text-white transition">
-                    +90 541 373 84 20
+                    +90 532 275 54 55
                   </a>
                   <span className="text-[11px] text-white/40">{copy.whatsappLabel}</span>
                 </div>

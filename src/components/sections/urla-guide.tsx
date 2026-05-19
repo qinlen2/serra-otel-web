@@ -4,200 +4,16 @@ import { Compass, Grape, Landmark, MapPin, Sailboat, Star, TreePalm, UtensilsCro
 import Image from "next/image";
 import Link from "next/link";
 
+import { usePreferences } from "@/components/layout/preference-provider";
 import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+
+import { getGuideSections } from "@/lib/data/guide-data";
 
 /* ------------------------------------------------------------------ */
 /* Data                                                                */
 /* ------------------------------------------------------------------ */
 
-interface GuideSection {
-  id: string;
-  icon: React.ElementType;
-  eyebrow: string;
-  title: string;
-  intro: string;
-  items: {
-    name: string;
-    image: string;
-    description: string;
-    detail?: string;
-    distance?: string;
-    tip?: string;
-  }[];
-}
-
-const sections: GuideSection[] = [
-  {
-    id: "tarih",
-    icon: Landmark,
-    eyebrow: "Tarih & Kültür",
-    title: "6.000 yıllık hikâyeye dokunun.",
-    intro:
-      "Urla, Ege'nin en eski yerleşimlerinden biri. Antik limanlardan zeytinyağı müzelerine, her köşede tarihin izlerini taşıyor.",
-    items: [
-      {
-        name: "Klazomenai Antik Kenti",
-        image: "/serra/guide/klazomenai.png",
-        description:
-          "Anadolu'nun bilinen en eski zeytinyağı işliğine ev sahipliği yapan 6.000 yıllık antik kent. Kazı alanında Arkaik dönem surları, tapınak temelleri ve seramik atölye kalıntıları görülebilir.",
-        detail: "İskele yolu üzerinde, otelden 4 km",
-        tip: "Kazı alanı ziyarete açıktır. Hafta içi sakin saatleri tercih edin.",
-      },
-      {
-        name: "Köstem Zeytinyağı Müzesi",
-        image: "/serra/guide/kostem.png",
-        description:
-          "Dünyanın en büyük zeytinyağı müzelerinden biri. Roma dönemi taş preslerinden modern sıkma makinelerine kadar zeytinyağının 5.000 yıllık yolculuğunu anlatan 1.500 m² sergi alanı.",
-        detail: "Uzunkuyu mevkii, Urla merkez yakını",
-        tip: "Müze çıkışında butik zeytinyağı tadımı ve alışveriş imkânı var.",
-      },
-      {
-        name: "Necati Cumalı Anı Evi",
-        image: "/serra/nearby/urla-sanat-sokagi.png",
-        description:
-          "Türk edebiyatının önemli ismi Necati Cumalı'nın kişisel eşyaları, el yazmaları ve fotoğraflarının sergilendiği restore edilmiş tarihi ev. Urla'nın edebi mirasını keşfetmek için.",
-        detail: "Urla ilçe merkezi, Sanat Sokağı yakını",
-      },
-    ],
-  },
-  {
-    id: "plajlar",
-    icon: TreePalm,
-    eyebrow: "Plajlar & Koylar",
-    title: "Her zevke bir sahil.",
-    intro:
-      "Aileler için sığ kumlu plajlardan, doğaseverler için bakir koylarına kadar Urla'nın kıyı şeridi her ihtiyaca cevap veriyor.",
-    items: [
-      {
-        name: "Çeşmealtı Mavi Plaj",
-        image: "/serra/nearby/cesmealt-plaj.png",
-        description:
-          "Serra Otel'e en yakın plaj. Mavi bayraklı, sığ ve berrak suyu ile çocuklu aileler için ideal. Beach club ve halk plajı alanları mevcut.",
-        distance: "Otelden 1.5 km (araçla 3 dk)",
-        tip: "Çakıllı zemin olduğu için deniz ayakkabısı tavsiye edilir.",
-      },
-      {
-        name: "Kum Denizi Plajı",
-        image: "/serra/guide/kum-denizi.png",
-        description:
-          "Mavi bayraklı halk plajı. Adından da anlaşılacağı gibi tamamen kumlu zemine sahip. Sığ denizi ve yürüyüş-bisiklet yollarıyla aileler için en güvenli tercih.",
-        distance: "Otelden 6 km (araçla 12 dk)",
-        tip: "Urla Belediyesi tarafından işletiliyor. Duş, tuvalet ve kafeterya mevcut.",
-      },
-      {
-        name: "Demircili Koyu",
-        image: "/serra/guide/demircili.png",
-        description:
-          "Urla'nın en bakir ve doğal güzelliğini koruyan koylarından biri. Berrak turkuaz suyu, çam ağaçlarıyla çevrili kıyısı ve sessiz atmosferiyle doğa kaçamağı arayanlar için.",
-        distance: "Otelden 18 km (araçla 25 dk)",
-        tip: "Hafta sonları kalabalık olabilir. Hafta içi gitmeniz tavsiye edilir. Kamp alanları mevcut.",
-      },
-    ],
-  },
-  {
-    id: "sarap",
-    icon: Grape,
-    eyebrow: "Şarap & Bağ Yolu",
-    title: "Ege'nin Toskana'sı.",
-    intro:
-      "Urla Bağ Yolu, sürdürülebilir turizm çalışmalarıyla uluslararası \"Green Destinations\" ödüllerine layık görülmüş, dünya standartlarında bir gastronomi rotası.",
-    items: [
-      {
-        name: "Urla Şarapçılık",
-        image: "/serra/nearby/urla-bag-yolu.png",
-        description:
-          "Bölgenin en köklü ve profesyonel üretim tesisi. Bağ turu, şarap tadımı ve restoranıyla tam gün geçirilebilecek bir deneyim sunuyor. Özellikle Cabernet Franc ve Nero d'Avola çeşitleriyle tanınır.",
-        distance: "Otelden 8 km (araçla 15 dk)",
-        tip: "Tadım için mutlaka önceden rezervasyon yapın.",
-      },
-      {
-        name: "Urlice Bağları",
-        image: "/serra/nearby/urla-bag-yolu.png",
-        description:
-          "Organik tarım prensipleriyle üretim yapan butik işletme. Restoranında bağ manzarası eşliğinde yerel lezzetler ve kendi üretimi şaraplar sunuluyor.",
-        distance: "Otelden 10 km (araçla 18 dk)",
-        tip: "Bağ bozumu dönemi (Ağustos sonu – Eylül başı) özel bir deneyim.",
-      },
-      {
-        name: "Mozaik & Diğer Bağ Evleri",
-        image: "/serra/nearby/urla-bag-yolu.png",
-        description:
-          "Sulama sistemi olmayan bağlarıyla deneysel tatlar üreten Mozaik, USCA, Perdix, İkideniz Arası ve MMG gibi butik üreticiler rotanın diğer önemli durakları.",
-        distance: "Urla Bağ Yolu güzergâhı boyunca",
-        tip: "Tüm bağ evleri rezervasyonla çalışır. Önceden arayın.",
-      },
-    ],
-  },
-  {
-    id: "gastronomi",
-    icon: UtensilsCrossed,
-    eyebrow: "Gastronomi",
-    title: "Michelin yıldızından köy lokantasına.",
-    intro:
-      "Urla, son yıllarda açılan iddialı şef restoranlarıyla Türkiye'nin gastronomi başkentlerinden biri haline geldi. Yerel lezzetlerden fine dining'e geniş bir yelpaze sunuyor.",
-    items: [
-      {
-        name: "OD Urla",
-        image: "/serra/guide/od-urla.png",
-        description:
-          "Şef Osman Sezener'in Michelin yıldızlı \"tarladan sofraya\" restoranı. Zeytin ağaçları arasında, odun ateşinde pişirilen mevsimsel tadım menüleri. Dana yanak, mevsim otu risottosu ve deniz mahsulleri imza lezzetleri arasında.",
-        distance: "Otelden 10 km (araçla 20 dk)",
-        tip: "Haftalar öncesinden rezervasyon gerekli. Akşam menüsü için 3 saat ayırın.",
-      },
-      {
-        name: "Vino Locale",
-        image: "/serra/nearby/urla-gastronomi.png",
-        description:
-          "Şef Ozan Kumbasar & sommelier Seray Kumbasar'ın Michelin yıldızlı restoranı. Modern Ege-İtalyan füzyon mutfağı, mevsimsel menü ve etkileyici şarap eşleşmeleri.",
-        distance: "Urla merkez yakını",
-        tip: "Yerel şarap eşleşmeli tadım menüsünü deneyin.",
-      },
-      {
-        name: "Yengeç Restaurant",
-        image: "/serra/nearby/urla-iskele.png",
-        description:
-          "Urla İskele'de tarihi taş binada hizmet veren efsanevi deniz ürünleri restoranı. 100'den fazla meze çeşidi, ballı kalamar, levrek simit ve ahtapot güveç imza lezzetleri.",
-        distance: "Otelden 4 km (araçla 8 dk)",
-        tip: "Akşam yemeği için rezervasyon şart. Gün batımında dış alanı tercih edin.",
-      },
-    ],
-  },
-  {
-    id: "kesfet",
-    icon: Compass,
-    eyebrow: "Keşfedilecek Duraklar",
-    title: "Yolun güzeli, Urla'nın köyleri.",
-    intro:
-      "Taş evleri, organik pazarları ve samimi kahvehaneleriyle Urla'nın köyleri, modern Ege yaşamının en güzel örneklerini sunuyor.",
-    items: [
-      {
-        name: "Bademler Köyü",
-        image: "/serra/guide/bademler.png",
-        description:
-          "Türkiye'nin ilk köy tiyatrosuna ev sahipliği yapan, tertemiz sokakları ve doğal ürün pazarıyla ünlü köy. Yerel kadınların hazırladığı gözleme ve mantı deneyimi için.",
-        distance: "Otelden 12 km (araçla 20 dk)",
-        tip: "Pazar günleri organik köy pazarı kuruluyor.",
-      },
-      {
-        name: "Güvendik Tepesi",
-        image: "/serra/nearby/guvendik-tepesi.png",
-        description:
-          "İzmir Körfezi'nin panoramik manzarasına karşı gün batımı izlemek için Urla'nın en iyi noktası. Tepedeki meşhur tarçınlı lokma, ziyaretin olmazsa olmazı.",
-        distance: "Otelden 2 km (araçla 5 dk)",
-        tip: "Gün batımından 30 dk önce gidin. Çay ve lokma yetişir.",
-      },
-      {
-        name: "Malgaca Pazarı & Sanat Sokağı",
-        image: "/serra/nearby/malgaca-pazari.png",
-        description:
-          "Urla'nın en eski ticaret merkezi Malgaca Pazarı, geleneksel esnafları ve tarihi kahvehaneleriyle zaman tüneli gibi. Sanat Sokağı'nda (Zafer Caddesi) ise seramik atölyeleri, antikacılar ve butik kafeler sıralanıyor.",
-        distance: "Otelden 4 km (araçla 8 dk)",
-        tip: "Katmerci'nin tahinli katmerini mutlaka deneyin.",
-      },
-    ],
-  },
-];
 
 const sources = [
   { name: "Enuygun – Urla Gezi Rehberi", url: "https://www.enuygun.com/seyahat-rehberi/urlada-gezilecek-yerler/" },
@@ -208,11 +24,55 @@ const sources = [
   { name: "ESHOT – Hat Bilgileri", url: "https://www.eshot.gov.tr/" },
 ];
 
+const uiCopy = {
+  tr: {
+    heroEyebrow: "Serra Otel Misafirlerine Özel",
+    heroTitle: "Urla Rehberi",
+    heroDesc: "Antik kalıntılardan Michelin yıldızlı restoranlara, bakir koylardan şarap bağlarına — Urla\u2019nın en özel köşelerini keşfedin.",
+    ctaTitle: "Urla\u2019yı keşfetmeye hazır mısınız?",
+    ctaDesc: "Serra Otel\u2019de konaklamanızı planlayın ve tüm bu güzelliklere birkaç dakika mesafede olun.",
+    ctaReserve: "Rezervasyon Talebi",
+    ctaRooms: "Odaları İncele",
+    sourcesTitle: "Kaynaklar & Referanslar",
+    sourcesDesc: "Bu rehberdeki bilgiler aşağıdaki kaynaklardan derlenmiştir.",
+    tipLabel: "İpucu:",
+  },
+  en: {
+    heroEyebrow: "Exclusive for Serra Hotel Guests",
+    heroTitle: "Urla Guide",
+    heroDesc: "From ancient ruins to Michelin-starred restaurants, pristine coves to wine routes — discover Urla\u2019s most special corners.",
+    ctaTitle: "Ready to explore Urla?",
+    ctaDesc: "Plan your stay at Serra Hotel and be just minutes away from all these wonders.",
+    ctaReserve: "Reservation Request",
+    ctaRooms: "View Rooms",
+    sourcesTitle: "Sources & References",
+    sourcesDesc: "Information in this guide is compiled from the following sources.",
+    tipLabel: "Tip:",
+  },
+  de: {
+    heroEyebrow: "Exklusiv für Serra Hotel Gäste",
+    heroTitle: "Urla Reiseführer",
+    heroDesc: "Von antiken Ruinen bis zu Michelin-Stern-Restaurants, unberührten Buchten bis zu Weinstraßen — entdecken Sie Urlas besonderste Ecken.",
+    ctaTitle: "Bereit, Urla zu entdecken?",
+    ctaDesc: "Planen Sie Ihren Aufenthalt im Serra Hotel und seien Sie nur wenige Minuten von all diesen Schönheiten entfernt.",
+    ctaReserve: "Reservierungsanfrage",
+    ctaRooms: "Zimmer ansehen",
+    sourcesTitle: "Quellen & Referenzen",
+    sourcesDesc: "Die Informationen in diesem Reiseführer stammen aus folgenden Quellen.",
+    tipLabel: "Tipp:",
+  },
+} as const;
+
+
 /* ------------------------------------------------------------------ */
 /* Component                                                           */
 /* ------------------------------------------------------------------ */
 
 export function UrlaGuide() {
+  const { language } = usePreferences();
+  const copy = uiCopy[language];
+  const sections = getGuideSections(language);
+
   return (
     <>
       {/* Hero Banner */}
@@ -233,15 +93,14 @@ export function UrlaGuide() {
             <div className="mb-5 flex items-center justify-center gap-3">
               <MapPin size={18} className="text-[var(--brand-gold)]" />
               <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-white/60">
-                Serra Otel Misafirlerine Özel
+                {copy.heroEyebrow}
               </span>
             </div>
             <h1 className="serif-heading text-4xl text-white sm:text-5xl md:text-6xl lg:text-7xl">
-              Urla Rehberi
+              {copy.heroTitle}
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70 md:text-lg">
-              Antik kalıntılardan Michelin yıldızlı restoranlara, bakir koylardan şarap bağlarına — Urla&apos;nın en
-              özel köşelerini keşfedin.
+              {copy.heroDesc}
             </p>
           </Reveal>
         </div>
@@ -318,7 +177,7 @@ export function UrlaGuide() {
                           <div className="mt-4 rounded-xl bg-[var(--brand-gold)]/8 border border-[var(--brand-gold)]/15 px-4 py-3">
                             <p className="flex items-start gap-2 text-[12px] leading-relaxed text-[var(--foreground)]">
                               <Star size={14} className="mt-0.5 shrink-0 text-[var(--brand-gold)]" />
-                              <span><strong className="text-[var(--brand-clay)]">İpucu:</strong> {item.tip}</span>
+                              <span><strong className="text-[var(--brand-clay)]">{copy.tipLabel}</strong> {item.tip}</span>
                             </p>
                           </div>
                         )}
@@ -336,23 +195,23 @@ export function UrlaGuide() {
       <section className="bg-[var(--brand-sea)] px-5 py-14 md:py-20 text-center">
         <Reveal variant="scaleUp">
           <h2 className="serif-heading text-2xl text-white sm:text-3xl md:text-4xl">
-            Urla&apos;yı keşfetmeye hazır mısınız?
+            {copy.ctaTitle}
           </h2>
           <p className="mx-auto mt-3 max-w-md text-[14px] text-white/60 md:text-[15px]">
-            Serra Otel&apos;de konaklamanızı planlayın ve tüm bu güzelliklere birkaç dakika mesafede olun.
+            {copy.ctaDesc}
           </p>
           <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/iletisim"
               className="inline-flex h-12 items-center rounded-full bg-white px-8 text-[14px] font-semibold text-[var(--brand-sea)] shadow-lg transition-all hover:bg-white/90 hover:-translate-y-0.5"
             >
-              Rezervasyon Talebi
+              {copy.ctaReserve}
             </Link>
             <Link
               href="/odalar"
               className="inline-flex h-12 items-center rounded-full border border-white/25 bg-white/5 px-8 text-[14px] font-medium text-white backdrop-blur-md transition-all hover:bg-white/15 hover:-translate-y-0.5"
             >
-              Odaları İncele
+              {copy.ctaRooms}
             </Link>
           </div>
         </Reveal>
@@ -363,11 +222,10 @@ export function UrlaGuide() {
         <div className="mx-auto max-w-4xl">
           <Reveal variant="fadeUp">
             <h3 className="text-[11px] font-bold uppercase tracking-[0.4em] text-[var(--muted)]">
-              Kaynaklar & Referanslar
+              {copy.sourcesTitle}
             </h3>
             <p className="mt-2 text-[13px] text-[var(--muted)]">
-              Bu rehberdeki bilgiler aşağıdaki kaynaklardan derlenmiştir. Güncel bilgiler için ilgili siteleri ziyaret
-              edebilirsiniz.
+              {copy.sourcesDesc}
             </p>
             <ul className="mt-5 grid gap-2 sm:grid-cols-2 md:grid-cols-3">
               {sources.map((s) => (

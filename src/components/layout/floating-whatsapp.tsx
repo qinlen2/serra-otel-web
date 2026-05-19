@@ -86,9 +86,21 @@ export function FloatingWhatsApp() {
 
   function openWhatsApp(text?: string) {
     const msg = text || message || "";
-    const url = msg
-      ? `https://wa.me/905413738420?text=${encodeURIComponent(msg)}`
+    let finalMsg = msg;
+    
+    if (msg) {
+      const prefix = {
+        tr: "Merhaba, siteniz üzerinden ulaşıyorum. ",
+        en: "Hello, I am reaching out from your website. ",
+        de: "Hallo, ich kontaktiere Sie über Ihre Website. ",
+      }[language];
+      finalMsg = `${prefix}${msg}`;
+    }
+
+    const url = finalMsg
+      ? `https://wa.me/905322755455?text=${encodeURIComponent(finalMsg)}`
       : getWhatsAppUrl(language, "konaklama");
+      
     window.open(url, "_blank", "noopener,noreferrer");
     if (!text) setMessage("");
   }
@@ -104,8 +116,8 @@ export function FloatingWhatsApp() {
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 400, damping: 30 }}
             className={cn(
-              "fixed z-[60] right-4 md:right-8 w-[340px] sm:w-[370px] rounded-2xl overflow-hidden shadow-2xl border border-[var(--line)]",
-              "bottom-[140px] lg:bottom-24"
+              "fixed z-[60] right-3 md:right-8 w-[calc(100vw-1.5rem)] max-w-[370px] rounded-2xl overflow-hidden shadow-2xl border border-[var(--line)]",
+              "bottom-[130px] lg:bottom-24"
             )}
           >
             {/* Header */}
@@ -197,14 +209,14 @@ export function FloatingWhatsApp() {
             exit={{ opacity: 0, scale: 0 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
             className={cn(
-              "fixed z-50 right-4 md:right-8",
-              "bottom-[80px] lg:bottom-8"
+              "fixed z-50 right-3 md:right-8",
+              "bottom-[76px] lg:bottom-8"
             )}
           >
             <button
               onClick={() => setChatOpen((prev) => !prev)}
               className={cn(
-                "group relative flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95",
+                "group relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full shadow-xl transition-all duration-300 hover:shadow-2xl hover:scale-105 active:scale-95",
                 chatOpen
                   ? "bg-gray-600 hover:bg-gray-700"
                   : "bg-[#25D366] hover:bg-[#128C7E]"
@@ -225,13 +237,6 @@ export function FloatingWhatsApp() {
               {/* Ping animation when closed */}
               {!chatOpen && (
                 <span className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-25" />
-              )}
-
-              {/* Notification dot */}
-              {!chatOpen && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white shadow-sm">
-                  1
-                </span>
               )}
             </button>
           </motion.div>

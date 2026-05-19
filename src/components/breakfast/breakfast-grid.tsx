@@ -22,35 +22,34 @@ export function BreakfastGrid() {
   
   const iconMap = {
     "breakfast-1": Egg, // Yumurta
-    "breakfast-2": Sandwich, // Peynir
-    "breakfast-3": Leaf, // Salatalık
-    "breakfast-4": Apple, // Domates
-    "breakfast-5": Leaf, // Biber
+    "breakfast-2": Sandwich, // Beyaz peynir
+    "breakfast-3": Apple, // Domates
+    "breakfast-4": Leaf, // Salatalık
+    "breakfast-5": Grape, // Siyah zeytin
     "breakfast-6": Slice, // Tereyağı
     "breakfast-7": Droplets, // Bal
-    "breakfast-8": Cookie, // Çokokrem
-    "breakfast-9": Grape, // Reçel
-    "breakfast-10": Coffee, // Çay
+    "breakfast-8": Cookie, // Vişne reçeli
+    "breakfast-9": Cookie, // Çokokrem
+    "breakfast-10": Coffee, // Sınırsız çay
   };
 
   return (
     <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
       {/* Featured panel with image */}
-      <div className="relative overflow-hidden rounded-[var(--radius-lg)] bg-[var(--brand-wood)] p-8 text-white shadow-[var(--shadow-xl)] md:p-10">
-        <div className="absolute inset-0 opacity-20">
-          <Image
-            src="/serra/current/gallery-03.jpeg"
-            alt="Serra Otel kahvaltı salonu"
-            fill
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            className="object-cover"
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--brand-wood)] via-[var(--brand-wood)]/80 to-transparent" />
-        <div className="relative">
-          <Utensils className="mb-8 text-[var(--brand-gold)]" size={28} />
-          <h3 className="serif-heading text-3xl text-white/95 md:text-4xl">{headline}</h3>
-          <p className="mt-5 text-sm leading-7 text-white/55">{note}</p>
+      <div className="relative overflow-hidden rounded-[var(--radius-lg)] min-h-[320px] md:min-h-[380px] shadow-[var(--shadow-xl)]">
+        <Image
+          src="/serra/current/kahvalti.jpeg"
+          alt="Serra Otel kahvaltı hazırlığı"
+          fill
+          sizes="(min-width: 1024px) 40vw, 100vw"
+          className="object-cover"
+        />
+        {/* Only a bottom gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+          <Utensils className="mb-4 text-[var(--brand-gold)]" size={24} />
+          <h3 className="serif-heading text-2xl text-white md:text-3xl">{headline}</h3>
+          <p className="mt-3 text-sm leading-7 text-white/70">{note}</p>
         </div>
       </div>
 

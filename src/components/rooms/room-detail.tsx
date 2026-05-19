@@ -1,6 +1,6 @@
 "use client";
 
-import { Bath, BedDouble, Snowflake, Tv, Users, Wifi } from "lucide-react";
+import { Bath, BedDouble, DoorOpen, Snowflake, Tv, Users, Wifi } from "lucide-react";
 
 import { usePreferences } from "@/components/layout/preference-provider";
 import { RoomGallery } from "@/components/rooms/room-gallery";
@@ -14,7 +14,7 @@ export function RoomDetail({ room }: { room: Room }) {
   const localizedRoom = getLocalizedRoomBySlug(room.slug, language) ?? room;
   const copy = {
     tr: {
-      eyebrow: "Serra Otel odası",
+      eyebrow: "Oda",
       bed: "Yatak",
       air: "Klima",
       tv: "TV",
@@ -31,7 +31,7 @@ export function RoomDetail({ room }: { room: Room }) {
       guest: "kişi",
     },
     en: {
-      eyebrow: "Serra Hotel room",
+      eyebrow: "Room",
       bed: "Bed",
       air: "Air conditioning",
       tv: "TV",
@@ -48,7 +48,7 @@ export function RoomDetail({ room }: { room: Room }) {
       guest: "guests",
     },
     de: {
-      eyebrow: "Serra Hotel Zimmer",
+      eyebrow: "Zimmer",
       bed: "Bett",
       air: "Klimaanlage",
       tv: "TV",
@@ -79,9 +79,14 @@ export function RoomDetail({ room }: { room: Room }) {
         <RoomGallery images={localizedRoom.images} />
         <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_0.42fr]">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-olive-700">{copy.eyebrow}</p>
-            <h1 className="mt-3 text-4xl font-semibold md:text-6xl">{localizedRoom.name}</h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-stone-600">{localizedRoom.shortDescription}</p>
+            <div className="flex items-center gap-2">
+              <DoorOpen size={16} className="text-[var(--brand-gold)]" />
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[var(--brand-gold)]">
+                {copy.eyebrow} {localizedRoom.slug.replace("oda-", "")}
+              </p>
+            </div>
+            <h1 className="mt-3 serif-heading text-4xl md:text-6xl text-[var(--foreground)]">{localizedRoom.name}</h1>
+            <p className="mt-5 max-w-2xl text-base leading-7 text-[var(--muted)]">{localizedRoom.shortDescription}</p>
             <div className="mt-8 flex flex-wrap gap-2">
               {featureIcons.map(([label, Icon]) => (
                 <div key={label as string} className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-white px-4 py-2.5 text-sm">
@@ -107,7 +112,7 @@ export function RoomDetail({ room }: { room: Room }) {
               <div className="flex justify-between"><dt className="text-stone-500">{copy.balcony}</dt><dd>{localizedRoom.hasBalcony ? copy.yes : copy.no}</dd></div>
             </dl>
             <Button asChild className="mt-6 w-full gap-2 bg-[var(--brand-sea)] hover:bg-[var(--brand-sea)]/80 text-white border-transparent" size="lg">
-              <a href={getWhatsAppUrl(language, localizedRoom.name)} target="_blank" rel="noopener noreferrer">
+              <a href={getWhatsAppUrl(language, `${localizedRoom.slug.replace("oda-", "")} nolu oda – ${localizedRoom.name}`)} target="_blank" rel="noopener noreferrer">
                 {copy.request}
               </a>
             </Button>

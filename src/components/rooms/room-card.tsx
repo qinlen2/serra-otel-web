@@ -1,6 +1,6 @@
 "use client";
 
-import { BedDouble, Maximize2, Users } from "lucide-react";
+import { BedDouble, DoorOpen, Maximize2, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -40,6 +40,12 @@ export function RoomCard({ room }: { room: Room }) {
 
         {/* Content */}
         <div className="p-4 sm:p-5 md:p-6">
+          <div className="mb-1 flex items-center gap-1.5">
+            <DoorOpen size={14} className="text-[var(--brand-gold)]" />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--brand-gold)]">
+              {language === "de" ? "Zimmer" : language === "en" ? "Room" : "Oda"} {room.slug.replace("oda-", "")}
+            </span>
+          </div>
           <h3 className="serif-heading text-base sm:text-lg text-[var(--foreground)] md:text-xl leading-snug">{room.name}</h3>
           <p className="mt-1.5 sm:mt-2 text-[13px] sm:text-sm leading-6 text-[var(--muted)] line-clamp-2">{room.shortDescription}</p>
 

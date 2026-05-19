@@ -62,7 +62,7 @@ export function HotelJsonLd() {
     ],
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: "+905413738420",
+      telephone: "+905322755455",
       contactType: "reservations",
       availableLanguage: ["Turkish", "English", "German"],
     },

@@ -86,7 +86,7 @@ export default function CancellationPage() {
             </p>
             <p className="mt-2 text-[var(--foreground)] font-medium">
               Telefon: +90 232 752 01 10<br />
-              WhatsApp: +90 541 373 84 20<br />
+              WhatsApp: +90 532 275 54 55<br />
               Adres: Atatürk Mahallesi, 2226. Sokak No:18, 35430 Urla/İzmir
             </p>
           </div>
