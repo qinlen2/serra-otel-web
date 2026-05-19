@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, MessageCircle, Phone } from "lucide-react";
+import { AtSign, MapPin, MessageCircle, Phone } from "lucide-react";
 import Link from "next/link";
 
 import { usePreferences } from "@/components/layout/preference-provider";
@@ -134,6 +134,18 @@ export function SiteFooter() {
             <Link href="/iptal-kosullari" className="hover:text-white transition">{t("footerCancel")}</Link>
             <a href="https://www.instagram.com" target="_blank" rel="noreferrer" className="hover:text-white transition">Instagram</a>
           </div>
+        </div>
+        <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-white/5 pt-5 text-center text-[11px] font-medium text-white/35 sm:flex-row sm:text-left">
+          <p>
+            Site tasarimi ve gelistirme:{" "}
+            <a href="https://salihcetin.ws" target="_blank" rel="noreferrer" className="text-white/55 transition hover:text-white">
+              salihcetin.ws
+            </a>
+          </p>
+          <a href="https://www.instagram.com/morningc.off" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-white/45 transition hover:text-white">
+            <AtSign size={13} />
+            @morningc.off
+          </a>
         </div>
       </div>
     </footer>
