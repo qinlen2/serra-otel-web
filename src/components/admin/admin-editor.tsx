@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { breakfastItems, hotelAreas, hotelHighlights, nearbyPlaces, rooms, siteSettings, transportRoutes } from "@/lib/data/site";
+import { safeStorageGet, safeStorageRemove, safeStorageSet } from "@/lib/utils/browser-storage";
 import type { BreakfastItem, HotelArea, NearbyPlace, Room, RoomImage, TransportRoute, HotelHighlight } from "@/types/site";
 
 /* ─── Types ─── */
@@ -54,7 +55,7 @@ export function AdminEditor() {
   const [mobileNav, setMobileNav] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("serra-admin-content");
+    const stored = safeStorageGet("local", "serra-admin-content");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -75,7 +76,7 @@ export function AdminEditor() {
 
   function persist(next: AdminData) {
     setData(next);
-    localStorage.setItem("serra-admin-content", JSON.stringify(next));
+    safeStorageSet("local", "serra-admin-content", JSON.stringify(next));
     setSaved(true);
     window.setTimeout(() => setSaved(false), 2000);
   }
@@ -153,7 +154,7 @@ export function AdminEditor() {
 
   function resetContent() {
     if (!confirm("Tüm değişiklikler silinecek. Emin misiniz?")) return;
-    localStorage.removeItem("serra-admin-content");
+    safeStorageRemove("local", "serra-admin-content");
     setData(initialData);
     setSelectedId(initialData.rooms[0].id);
   }

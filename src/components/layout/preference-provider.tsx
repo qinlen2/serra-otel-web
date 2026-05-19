@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
 
+import { safeStorageGet, safeStorageRemove, safeStorageSet } from "@/lib/utils/browser-storage";
+
 type ThemeMode = "light" | "dim" | "dark";
 export type Language = "tr" | "en" | "de";
 
@@ -197,9 +199,9 @@ export function PreferenceProvider({ children }: { children: React.ReactNode }) 
 
   useEffect(() => {
     const id = window.setTimeout(() => {
-      const storedLanguage = localStorage.getItem("serra-language") as Language | null;
+      const storedLanguage = safeStorageGet("local", "serra-language") as Language | null;
 
-      localStorage.removeItem("serra-theme");
+      safeStorageRemove("local", "serra-theme");
       setThemeState(getTimeBasedTheme());
       if (storedLanguage) setLanguageState(storedLanguage);
 
@@ -224,7 +226,7 @@ export function PreferenceProvider({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (!preferencesLoaded.current) return;
     document.documentElement.lang = language;
-    localStorage.setItem("serra-language", language);
+    safeStorageSet("local", "serra-language", language);
   }, [language]);
 
   const value = useMemo(

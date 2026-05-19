@@ -3,19 +3,21 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
+import { safeStorageGet, safeStorageSet } from "@/lib/utils/browser-storage";
+
 export function PageLoader() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Check sessionStorage to only show once per session
-    const hasLoaded = sessionStorage.getItem("serra-loaded");
+    const hasLoaded = safeStorageGet("session", "serra-loaded");
     if (hasLoaded) {
       setLoading(false);
       return;
     }
     const timer = setTimeout(() => {
       setLoading(false);
-      sessionStorage.setItem("serra-loaded", "1");
+      safeStorageSet("session", "serra-loaded", "1");
     }, 1800);
     return () => clearTimeout(timer);
   }, []);

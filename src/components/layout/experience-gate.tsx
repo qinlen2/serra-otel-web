@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { PreferenceControls } from "@/components/layout/preference-controls";
 import { usePreferences } from "@/components/layout/preference-provider";
 import { Button } from "@/components/ui/button";
+import { safeStorageGet, safeStorageSet } from "@/lib/utils/browser-storage";
 
 export function ExperienceGate() {
   const [open, setOpen] = useState(false);
@@ -30,7 +31,7 @@ export function ExperienceGate() {
 
   useEffect(() => {
     const id = window.setTimeout(() => {
-      setOpen(localStorage.getItem("serra-experience-ready") !== "yes");
+      setOpen(safeStorageGet("local", "serra-experience-ready") !== "yes");
     }, 0);
 
     return () => window.clearTimeout(id);
@@ -60,7 +61,7 @@ export function ExperienceGate() {
         <Button
           className="mt-6 w-full rounded-full"
           onClick={() => {
-            localStorage.setItem("serra-experience-ready", "yes");
+            safeStorageSet("local", "serra-experience-ready", "yes");
             setOpen(false);
           }}
         >
