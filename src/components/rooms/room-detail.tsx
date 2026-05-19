@@ -82,14 +82,12 @@ export function RoomDetail({ room }: { room: Room }) {
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-olive-700">{copy.eyebrow}</p>
             <h1 className="mt-3 text-4xl font-semibold md:text-6xl">{localizedRoom.name}</h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-stone-600">{localizedRoom.shortDescription}</p>
-            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="mt-8 flex flex-wrap gap-2">
               {featureIcons.map(([label, Icon]) => (
-                <Card key={label as string}>
-                  <CardContent className="p-4">
-                    <Icon className="text-olive-700" size={20} />
-                    <p className="mt-4 text-sm font-medium">{label as string}</p>
-                  </CardContent>
-                </Card>
+                <div key={label as string} className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-white px-4 py-2.5 text-sm">
+                  <Icon className="text-olive-700" size={16} />
+                  <span className="font-medium">{label as string}</span>
+                </div>
               ))}
             </div>
             <div className="mt-8">

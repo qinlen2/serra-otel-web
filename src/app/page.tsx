@@ -19,22 +19,22 @@ export default function Home() {
         <RoomsShowcase limit={6} />
       </div>
 
-      {/* 2. Otel Turu — "Otel nasıl bir yer?" */}
+      {/* 2. Yorumlar — Sosyal kanıt, erken güven */}
+      <ReviewsSection />
+
+      {/* 3. Otel Turu — "Otel nasıl bir yer?" */}
       <HotelTourSection />
 
-      {/* 3. Kahvaltı — Duyusal deneyim */}
+      {/* 4. Kahvaltı — Duyusal deneyim */}
       <div className="bg-[var(--brand-sand)]/20 border-y border-[var(--brand-olive)]/10">
         <BreakfastSection />
       </div>
 
-      {/* 4. Deniz & Plaj — Lokasyon avantajı */}
+      {/* 5. Deniz & Plaj — Lokasyon avantajı */}
       <SeaSection />
 
-      {/* 5. Hava Durumu — Plajdan sonra bağlam kazanır */}
+      {/* 6. Hava Durumu */}
       <WeatherSection />
-
-      {/* 6. Yorumlar — Sosyal kanıt, karar anında */}
-      <ReviewsSection />
 
       {/* 7. Çevre & Keşif — Motivasyon */}
       <NearbySection />
